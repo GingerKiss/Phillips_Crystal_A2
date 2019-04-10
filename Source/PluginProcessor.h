@@ -54,7 +54,12 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    
+    AudioBuffer<float> returnAudioBuffer;
+    dsp::Gain<float> gain;
+    SmoothedValue<float> mixLevel;
+    //float mixLevel;
+    
 private:
     float currentSampleRate;
     double systemSampleRate;

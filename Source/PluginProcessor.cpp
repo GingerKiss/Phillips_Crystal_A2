@@ -27,7 +27,9 @@ Phillips_crystal_a2AudioProcessor::Phillips_crystal_a2AudioProcessor()
     currentSampleRate = 0.0f;
     currentAngle = 0.0f;
     angleDelta = 0.0f;
-    sinFreq = 100.0f;
+    sinFreq = 0.0f;
+    
+    
 }
 
 Phillips_crystal_a2AudioProcessor::~Phillips_crystal_a2AudioProcessor()
@@ -102,12 +104,18 @@ void Phillips_crystal_a2AudioProcessor::prepareToPlay (double sampleRate, int sa
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     currentSampleRate = sampleRate;
-    sinFreq = 60.0f;
+    sinFreq = 1.0f;
     updateAngleDelta();
+    
+    mixLevel.reset(sampleRate, 0.5f);
+    mixLevel.setTargetValue(0.15f);
+    
+    
+    gain.setGainDecibels(0.2f);
     
     String message;
     message << "Preparing to play..." << newLine;
-    message <<"My sample rate is " << systemSampleRate << newLine;
+    message <<"My sample rate is " << currentSampleRate << newLine;
     message << "Buffer size is " << samplesPerBlock << newLine;
     Logger::getCurrentLogger()->writeToLog(message);
 }
@@ -174,30 +182,40 @@ void Phillips_crystal_a2AudioProcessor::processBlock (AudioBuffer<float>& buffer
             
             // CODE 1
             // generating a set of random values to modulate input amplitude
-            float modulator = random.nextFloat() * 0.25f - 0.125f;
+            
+            float modulator = random.nextFloat() * 0.5f - 0.25f;
             wetData[sample] = wetData[sample] * modulator; //scaling and offsetting
             
-            // CODE 2
-            // calculate value to put into buffer
-            // auto currentSinSample = (float) std::sin(currentAngle);
-            // currentAngle += angleDelta; // currentAngle = currentAngle + angleDelta
-            // lets make our sine wave wiggle
-            // float modulator = random.nextFloat() * 0.1f - 0.05f;
-            // wetData[sample] = wetData[sample] * currentSinSample; // + modulator);
             
-            // auto shapedSample = jlimit((float) -0.1, (float) 0.1, wetData[sample]);
-            // soft-clip with hypobolic tangent
+            // CODE 2
+            //calculate value to put into buffer
+            auto currentSinSample = (float) std::sin(currentAngle);
+            currentAngle += angleDelta; // currentAngle = currentAngle + angleDelta
+            
+            //lets make our sine wave wiggle
+            modulator = random.nextFloat() * 0.1f - 0.05f;
+            wetData[sample] = wetData[sample] * currentSinSample; // + modulator);
+            
+            //soft-clip with hypobolic tangent
+            //auto shapedSample = jlimit((float) -0.8, (float) 0.8, wetData[sample]);
             //auto shapedSample = (float) std::tanh(wetData[sample]);
             //wetData[sample] = shapedSample;
             
             
             //add original dry signal with processed signal into our output buffer (a.k.a input buffer)
-            channelData[sample] = channelData[sample] * 0.6f + wetData[sample] * 0.4f;//jlimit((float) -0.1, (float) 0.1, wetData[sample]); // * 0.5f; // + wetData[sample] * 0.5f;
+            channelData[sample] = channelData[sample] * 0.7f + wetData[sample] * 0.20f;
+            //channelData[sample] = jlimit((float) -0.1, (float) 0.1, wetData[sample]);
+            
+            channelData[sample] = channelData[sample] + wetData[sample] * mixLevel.getNextValue();
+            
+            //wetData[sample] * mixLevel; //jlimit((float) -0.1, (float) 0.1, wetData[sample]);  * 0.5f; // + wetData[sample] * 0.5f;
             //=======================================================================
         }
     }
+    dsp::AudioBlock<float> output(buffer);
+    gain.process(dsp::ProcessContextReplacing<float>(output));
     // duplicate buffer for audioVisualComponent
-    //returnAudioBuffer.makeCopyOf(buffer);
+    returnAudioBuffer.makeCopyOf(buffer);
 }
 //==============================================================================
 bool Phillips_crystal_a2AudioProcessor::hasEditor() const

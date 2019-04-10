@@ -137,6 +137,10 @@
 			isa = PBXBuildFile;
 			fileRef = 6E7B486C430CFBCE87F2F5DD;
 		};
+		17FD1FC51004E70A0D909098 = {
+			isa = PBXBuildFile;
+			fileRef = 82051453704AE8BD01BA8B16;
+		};
 		9B7EE58EF68DB74BA3436657 = {
 			isa = PBXBuildFile;
 			fileRef = 2CB35AE2EFB5E1949E4176DA;
@@ -335,6 +339,13 @@
 			path = "/Users/crystalphillips/Downloads/SOFTWARE 2019/JUCE/JUCE/modules/juce_audio_processors";
 			sourceTree = "<absolute>";
 		};
+		82051453704AE8BD01BA8B16 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_dsp.mm";
+			path = "../../JuceLibraryCode/include_juce_dsp.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
 		875C2507D9BBC7AB100EBF7A = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -348,6 +359,13 @@
 			name = "include_juce_graphics.mm";
 			path = "../../JuceLibraryCode/include_juce_graphics.mm";
 			sourceTree = "SOURCE_ROOT";
+		};
+		8D776624000C90AB21C9743A = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_dsp";
+			path = "/Users/crystalphillips/Downloads/SOFTWARE 2019/JUCE/JUCE/modules/juce_dsp";
+			sourceTree = "<absolute>";
 		};
 		94D6B3962B5DA7E884665A6E = {
 			isa = PBXFileReference;
@@ -582,6 +600,7 @@
 				2DB1F1C4AB87760784BE49D8,
 				6F49D0E7ED799619A0D13245,
 				0ECF410815B2C72423F39321,
+				8D776624000C90AB21C9743A,
 				D59C405805BAF65010D0C706,
 				F6D27C228B64FCC346205E19,
 				96759CA678B4FD94C7485977,
@@ -608,6 +627,7 @@
 				D05BC62185FBE19263701FBD,
 				3BC62BA5ED2A45C4E8E5C91F,
 				6E7B486C430CFBCE87F2F5DD,
+				82051453704AE8BD01BA8B16,
 				2CB35AE2EFB5E1949E4176DA,
 				8D67E1133BADCCF9041E1125,
 				B9452DE7D0BB26D43BAAA269,
@@ -1427,6 +1447,7 @@
 				EFC24E44C3B30F8DB34D7916,
 				2500100F6E7DA2B6EA0AFF61,
 				085EF3D07AEE9286F2ACDBB9,
+				17FD1FC51004E70A0D909098,
 				9B7EE58EF68DB74BA3436657,
 				4B8BDB342A9FB030A450006A,
 				35DAA552D7BACBBA23704F2C,
